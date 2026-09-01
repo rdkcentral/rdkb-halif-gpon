@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "/gpon_json/gpon_hal_schema.json",
+  "$id": "/gpon_json/gpon_wan_unify_hal_schema.json",
   "title": "GPON HAL Schema",
   "description": "GPON HAL JSON Schema definitions. DO NOT modify the contents of this schema file. RDK community team make necessary changes and release",
 
@@ -9,7 +9,7 @@
     "schemaVersion" : {
       "description": "Supported version of the schema. DO NOT modify the value of the version string. HAL operation cannot be performed without correct supported version.",
       "type": "string",
-      "const": "1.0.0"
+      "const": "0.0.1"
     },
 
     "moduleName" : {
@@ -160,6 +160,9 @@
     "setParameterSupportedList": {
       "description": "Supported data model parameter list for setParameters action",
       "anyOf": [
+          { "$ref": "#/definitions/ontPhysicalMediaEnable" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlias" },
+          { "$ref": "#/definitions/ontPhysicalMediaLowerLayers" },
           { "$ref": "#/definitions/ontPhysicalMediaRxPowerSignalLevelLowerThreshold" },
           { "$ref": "#/definitions/ontPhysicalMediaRxPowerSignalLevelUpperThreshold" },
           { "$ref": "#/definitions/ontPhysicalMediaTxPowerSignalLevelLowerThreshold" },
@@ -188,8 +191,13 @@
           { "$ref": "#/definitions/ontPhysicalMediaModuleFirmwareVersion" },
           { "$ref": "#/definitions/ontPhysicalMediaPonMode" },
           { "$ref": "#/definitions/ontPhysicalMediaConnector" },
+          { "$ref": "#/definitions/ontPhysicalMediaEnable" },
           { "$ref": "#/definitions/ontPhysicalMediaStatus" },
           { "$ref": "#/definitions/ontPhysicalMediaRedundancyState" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlias" },
+          { "$ref": "#/definitions/ontPhysicalMediaLastChange" },
+          { "$ref": "#/definitions/ontPhysicalMediaLowerLayers" },
+          { "$ref": "#/definitions/ontPhysicalMediaUpstream" },
           { "$ref": "#/definitions/ontPhysicalMediaNominalBitRateDownstream" },
           { "$ref": "#/definitions/ontPhysicalMediaNominalBitRateUpstream" },
           { "$ref": "#/definitions/ontPhysicalMediaPerformanceThresholdObj" },
@@ -518,6 +526,23 @@
       }
     },
 
+    "ontPhysicalMediaEnable": {
+      "description": "The Enable, indicates whether the interface is enabled or disbled. (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Enable$"
+        },
+        "type": {
+          "type": "string",
+          "const": "boolean"
+        },
+        "value": { "type": "boolean" }
+      }
+    },
+
     "ontPhysicalMediaStatus": {
       "description": "It shows the current operational status of the optical interface at physical level (Access = Read-Only)",
       "type": "object",
@@ -552,6 +577,83 @@
           "const": "string"
         },
         "value": { "$ref": "#/definitions/redundancyStateEnumList" }
+      }
+    },
+
+    "ontPhysicalMediaAlias": {
+      "description": "The alias, it shows a non-volatile unique key used to reference this instance. Alias provides a mechanism for a Controller to label this instance for future reference. (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alias$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 64
+        }
+      }
+    },
+
+    "ontPhysicalMediaLastChange": {
+      "description": "The last change, it shows the accumulated time in seconds since the DSL line entered its current operational state. (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.LastChange$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPhysicalMediaLowerLayers": {
+      "description": "The lower layers, it shows comma-separated list (maximum list length 1024) of strings. (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.LowerLayers$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      }
+    },
+
+    "ontPhysicalMediaUpstream": {
+      "description": "The Upstream, indicates whether the interface points towards the Internet (true) or towards End Devices (false). (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Upstream$"
+        },
+        "type": {
+          "type": "string",
+          "const": "boolean"
+        },
+        "value": { "type": "boolean" }
       }
     },
 
