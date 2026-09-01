@@ -1,0 +1,6 @@
+{
+  "module": "gponhal",
+  "version": "0.0.1",  
+  "action": "getSchema",
+  "reqId" : "100002"
+}

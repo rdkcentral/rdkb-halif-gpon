@@ -1,0 +1,2570 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "/gpon_json/gpon_hal_schema.json",
+  "title": "GPON HAL Schema",
+  "description": "GPON HAL JSON Schema definitions. DO NOT modify the contents of this schema file. RDK community team make necessary changes and release",
+
+  "definitions": {
+
+    "schemaVersion" : {
+      "description": "Supported version of the schema. DO NOT modify the value of the version string. HAL operation cannot be performed without correct supported version.",
+      "type": "string",
+      "const": "0.0.1"
+    },
+
+    "moduleName" : {
+        "description": "Module name to be used in JSON message",
+        "type": "string",
+        "const": "gponhal"
+    },
+
+    "action": {
+      "description": "List of action strings that can be used in a JSON message that is exchanged between RDK Manager & Vendor Software.",
+      "type": "string",
+      "enum": [
+        "getSchema",
+        "getParameters",
+        "getParametersResponse",
+        "setParameters",
+        "subscribeEvent",
+        "getActiveSubscriptions",
+        "getActiveSubscriptionsResponse",
+        "getSchemaResponse",
+        "publishEvent",
+        "deleteObject",
+        "result"
+      ]
+    },
+
+    "getParameters": {
+      "description": "Supported parameters of 'getParameters' action used by RDK Manager JSON HAL client.",
+      "anyOf": [
+        { "$ref": "#/definitions/getParameterSupportedList" },
+        { "$ref": "#/definitions/getParameterOptionalList" }
+      ],
+      "required": [ "name" ]
+    },
+
+    "getParametersResponse": {
+      "description": "Supported parameters of 'getParametersResponse' action used by Vendor Software JSON HAL server",
+      "anyOf": [
+        { "$ref": "#/definitions/getParameterSupportedList" },
+        { "$ref": "#/definitions/getParameterOptionalList" }
+      ],
+      "required": [ "name", "type", "value" ]
+    },
+
+    "getSchema": {
+      "description": "The 'getSchema' action used by RDK Manager JSON HAL client. This action doesn't have any params list."
+    },
+
+    "getSchemaResponse": {
+      "description": "Properties of 'getSchemaResponse' action used by Vendor software JSON HAL server.",
+      "type": "object",
+      "properties": {
+        "FilePath": {
+          "type": "string",
+          "pattern": "^(.+)\/([^/]+)$"
+        }
+      },
+      "additionalProperties": false,
+      "required": [ "FilePath" ]
+    },
+
+    "setParameters": {
+      "description": "Supported parameters of 'setParameters' action used by RDK Manager JSON HAL client.",
+      "anyOf": [
+        { "$ref": "#/definitions/setParameterSupportedList" },
+        { "$ref": "#/definitions/setParameterOptionalList" }
+      ],
+      "required": [ "name", "type", "value" ]
+    },
+
+    "result": {
+      "type": "object",
+      "properties": {
+        "Status": { "$ref": "#/definitions/resultStatusEnumList" }
+      },
+      "additionalProperties": false,
+      "required": [ "Status" ]
+    },
+
+    "subscribeEvent": {
+      "description": "RDK Manager uses this action to subscribe any event that it wants to receive from the Vendor Software",
+      "anyOf": [
+        { "$ref": "#/definitions/subscribeEventSupportedList" }
+      ],
+      "required": [ "name", "notificationType" ]
+    },
+
+    "publishEvent": {
+      "description": "Vendor Software uses this action to publish events that are subscribed by the RDK Manager",
+      "anyOf": [
+          { "$ref": "#/definitions/subscribeEventSupportedList" }
+      ],
+      "required": [ "name", "type","value" ]
+    },
+
+    "deleteObject": {
+      "anyOf": [
+
+      ],
+      "required": [ "name" ]
+    },
+
+    "notificationType": {
+      "type": "string",
+      "enum": [
+        "interval",
+        "onChange"
+      ],
+      "default": "onChange"
+    },
+
+    "resultStatusEnumList": {
+      "description": "Result string for any action that is requested",
+      "type": "string",
+      "enum": [
+        "Success",
+        "Failed",
+        "Invalid Argument",
+        "Not Supported"
+      ],
+      "default": "Success"
+    },
+
+    "subscribeEventSupportedList": {
+      "description": "Supported data model parameter list for subscribeEvent and publishEvent actions",
+      "anyOf": [
+          { "$ref": "#/definitions/ontPhysicalMediaStatus" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmRdi" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmPee" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmLos" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmLof" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmDact" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmDis" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmMis" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmMem" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmSuf" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmSd" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmSf" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmLcdg" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmTf" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmRogue" },
+          { "$ref": "#/definitions/ontPloamRegistrationState" },
+          { "$ref": "#/definitions/ontVeipAdministrativeState" },
+          { "$ref": "#/definitions/ontVeipOperationalState" }
+      ]
+    },
+
+    "setParameterSupportedList": {
+      "description": "Supported data model parameter list for setParameters action",
+      "anyOf": [
+          { "$ref": "#/definitions/ontPhysicalMediaRxPowerSignalLevelLowerThreshold" },
+          { "$ref": "#/definitions/ontPhysicalMediaRxPowerSignalLevelUpperThreshold" },
+          { "$ref": "#/definitions/ontPhysicalMediaTxPowerSignalLevelLowerThreshold" },
+          { "$ref": "#/definitions/ontPhysicalMediaTxPowerSignalLevelUpperThreshold" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowIngressTagged" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowIngressQVlanVid" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowEgressTagged" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowEgressQVlanVid" }
+      ]
+    },
+
+    "setParameterOptionalList": {
+      "description": "Optional data model parameter list for setParameters action",
+      "anyOf": [
+      ]
+    },
+
+    "getParameterSupportedList": {
+      "description": "Supported data model parameter list for getParameters action",
+      "anyOf": [
+          { "$ref": "#/definitions/ontPhysicalMediaObjName" },
+          { "$ref": "#/definitions/ontPhysicalMediaCage" },
+          { "$ref": "#/definitions/ontPhysicalMediaModuleVendor" },
+          { "$ref": "#/definitions/ontPhysicalMediaModuleName" },
+          { "$ref": "#/definitions/ontPhysicalMediaModuleVersion" },
+          { "$ref": "#/definitions/ontPhysicalMediaModuleFirmwareVersion" },
+          { "$ref": "#/definitions/ontPhysicalMediaPonMode" },
+          { "$ref": "#/definitions/ontPhysicalMediaConnector" },
+          { "$ref": "#/definitions/ontPhysicalMediaStatus" },
+          { "$ref": "#/definitions/ontPhysicalMediaRedundancyState" },
+          { "$ref": "#/definitions/ontPhysicalMediaNominalBitRateDownstream" },
+          { "$ref": "#/definitions/ontPhysicalMediaNominalBitRateUpstream" },
+          { "$ref": "#/definitions/ontPhysicalMediaPerformanceThresholdObj" },
+          { "$ref": "#/definitions/ontPhysicalMediaPerformanceThresholdSignalFail" },
+          { "$ref": "#/definitions/ontPhysicalMediaPerformanceThresholdSignalDegrade" },
+          { "$ref": "#/definitions/ontPhysicalMediaRxPowerObj" },
+          { "$ref": "#/definitions/ontPhysicalMediaRxPowerSignalLevel" },
+          { "$ref": "#/definitions/ontPhysicalMediaRxPowerSignalLevelLowerThreshold" },
+          { "$ref": "#/definitions/ontPhysicalMediaRxPowerSignalLevelUpperThreshold" },
+          { "$ref": "#/definitions/ontPhysicalMediaTxPowerObj" },
+          { "$ref": "#/definitions/ontPhysicalMediaTxPowerSignalLevel" },
+          { "$ref": "#/definitions/ontPhysicalMediaTxPowerSignalLevelLowerThreshold" },
+          { "$ref": "#/definitions/ontPhysicalMediaTxPowerSignalLevelUpperThreshold" },
+          { "$ref": "#/definitions/ontPhysicalMediaVoltageObj" },
+          { "$ref": "#/definitions/ontPhysicalMediaVoltageLevel" },
+          { "$ref": "#/definitions/ontPhysicalMediaBiasObj" },
+          { "$ref": "#/definitions/ontPhysicalMediaCurrentBias" },
+          { "$ref": "#/definitions/ontPhysicalMediaTemperatureObj" },
+          { "$ref": "#/definitions/ontPhysicalMediaTemperatureCurrentTemp" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmObj" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmRdi" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmPee" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmLos" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmLof" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmDact" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmDis" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmMis" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmMem" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmSuf" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmSd" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmSf" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmLcdg" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmTf" },
+          { "$ref": "#/definitions/ontPhysicalMediaAlarmRogue" },
+          { "$ref": "#/definitions/ontGtcObj" },
+          { "$ref": "#/definitions/ontGtcCorrectedFecBytes" },
+          { "$ref": "#/definitions/ontGtcCorrectedFecCodeWords" },
+          { "$ref": "#/definitions/ontGtcUnCorrectedFecCodeWords" },
+          { "$ref": "#/definitions/ontGtcGtcTotalFecCodeWords" },
+          { "$ref": "#/definitions/ontGtcHecErrorCount" },
+          { "$ref": "#/definitions/ontGtcPSBdHecErrors" },
+          { "$ref": "#/definitions/ontGtcFrameHecErrors" },
+          { "$ref": "#/definitions/ontGtcFramesLost" },
+          { "$ref": "#/definitions/ontPloamObj" },
+          { "$ref": "#/definitions/ontPloamOnuId" },
+          { "$ref": "#/definitions/ontPloamVendorId" },
+          { "$ref": "#/definitions/ontPloamSerialNumber" },
+          { "$ref": "#/definitions/ontPloamRegistrationState" },
+          { "$ref": "#/definitions/ontPloamActivationCounter" },
+          { "$ref": "#/definitions/ontPloamTxMessageCount" },
+          { "$ref": "#/definitions/ontPloamRxMessageCount" },
+          { "$ref": "#/definitions/ontPloamMicErrors" },
+          { "$ref": "#/definitions/ontPloamRegistrationTimersObj" },
+          { "$ref": "#/definitions/ontPloamRegistrationTimersTO1" },
+          { "$ref": "#/definitions/ontPloamRegistrationTimersTO2" },
+          { "$ref": "#/definitions/ontGemObj" },
+          { "$ref": "#/definitions/ontGemPortId" },
+          { "$ref": "#/definitions/ontGemTrafficType" },
+          { "$ref": "#/definitions/ontGemTransmittedFrames" },
+          { "$ref": "#/definitions/ontGemReceivedFrames" },
+          { "$ref": "#/definitions/ontOmciObj" },
+          { "$ref": "#/definitions/ontOmciRxBaseLineMessageCountValid" },
+          { "$ref": "#/definitions/ontOmciRxExtendedMessageCountValid" },
+          { "$ref": "#/definitions/ontOmciMicErrors" },
+          { "$ref": "#/definitions/ontVeipObj" },
+          { "$ref": "#/definitions/ontVeipInterfaceName" },
+          { "$ref": "#/definitions/ontVeipMeId" },
+          { "$ref": "#/definitions/ontVeipAdministrativeState" },
+          { "$ref": "#/definitions/ontVeipOperationalState" },
+          { "$ref": "#/definitions/ontVeipInterDomainName" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowIngressObj" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowIngressTagged" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowIngressQVlanObj" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowIngressQVlanVid" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowIngressQVlanPcp" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowIngressQVlanDei" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowEgressObj" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowEgressTagged" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowEgressQVlanObj" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowEgressQVlanVid" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowEgressQVlanPcp" },
+          { "$ref": "#/definitions/ontVeipEthernetFlowEgressQVlanDei" },
+          { "$ref": "#/definitions/ontTR69Obj" },
+          { "$ref": "#/definitions/ontTR69url" },
+          { "$ref": "#/definitions/ontTR69AssociatedTag" }
+      ]
+    },
+
+    "getParameterOptionalList": {
+      "description": "Optional data model parameter list for getParameters action",
+      "anyOf": [
+          { "$ref": "#/definitions/ontGemEthernetFlowObj" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressObj" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressTagged" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressCVlanObj" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressCVlanVid" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressCVlanPcp" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressCVlanDei" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressSVlanObj" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressSVlanVid" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressSVlanPcp" },
+          { "$ref": "#/definitions/ontGemEthernetFlowIngressSVlanDei" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressObj" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressTagged" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressCVlanObj" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressCVlanVid" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressCVlanPcp" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressCVlanDei" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressSVlanObj" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressSVlanVid" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressSVlanPcp" },
+          { "$ref": "#/definitions/ontGemEthernetFlowEgressSVlanDei" },
+          { "$ref": "#/definitions/ontTR69Obj" },
+          { "$ref": "#/definitions/ontTR69url" },
+          { "$ref": "#/definitions/ontTR69AssociatedTag" }
+      ]
+    },
+
+    "statusEnumList": {
+      "type": "string",
+      "enum": [
+        "Up",
+        "Down",
+        "Unknown",
+        "Dormant",
+        "NotPresent",
+        "LowerLayerDown",
+        "Error"
+      ]
+    },
+
+    "redundancyStateEnumList": {
+      "type": "string",
+      "enum": [
+        "Active",
+        "Standby"
+      ]
+    },
+
+    "alarmEnumList": {
+      "type":"string",
+      "enum": [
+        "Active",
+        "Inactive"
+        ]
+    },
+
+    "lockEnumList": {
+      "type":"string",
+      "enum": [
+        "Lock",
+        "Unlock"
+        ]
+    },
+
+    "ponModeEnumList": {
+      "type": "string",
+      "enum": [
+        "GPON",
+        "XG-PON",
+        "NG-PON2",
+        "XGS-PON"
+      ]
+    },
+
+    "physicalConnectorEnumList": {
+      "type": "string",
+      "enum": [
+        "LC",
+        "ST",
+        "FC",
+        "SC",
+        "MT-RJ"
+      ]
+    },
+
+
+    "ontPhysicalMediaObjName": {
+      "description": "Optical device",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.$"
+        }
+      }
+    },
+
+    "ontPhysicalMediaCage": {
+      "description": "Specifies the hardware layout for the optical device, bosa on board or external SFP (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Cage$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type":"string",
+          "enum": ["BoB","SFP"]
+        }
+      }
+    },
+
+    "ontPhysicalMediaModuleVendor": {
+      "description": "Informs about the vendor of the optical media (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.ModuleVendor$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type":"string",
+          "maxLength": 256
+        }
+      }
+    },
+
+    "ontPhysicalMediaModuleName": {
+      "description": "Informs about the module name of the optical module (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.ModuleName$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type":"string",
+          "maxLength": 256
+        }
+      }
+    },
+
+    "ontPhysicalMediaModuleVersion": {
+      "description": "Informs about the hardware version of the optical module (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.ModuleVersion$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type":"string",
+          "maxLength": 256
+        }
+      }
+    },
+
+    "ontPhysicalMediaModuleFirmwareVersion": {
+      "description": "Informs about the firmware version of the optical module (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.ModuleFirmwareVersion$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type":"string",
+          "maxLength": 256
+        }
+      }
+    },
+
+    "ontPhysicalMediaPonMode": {
+      "description": "The passive optical network mode supported by the optical module and ONT (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.PonMode$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type":"string",
+          "value": { "$ref": "#/definitions/ponModeEnumList" }
+        }
+      }
+    },
+
+    "ontPhysicalMediaConnector": {
+      "description": "The kind of optical connector used in the optical module (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Connector$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type":"string",
+          "value": { "$ref": "#/definitions/physicalConnectorEnumList" }
+        }
+      }
+    },
+
+    "ontPhysicalMediaStatus": {
+      "description": "It shows the current operational status of the optical interface at physical level (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Status$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": { "$ref": "#/definitions/statusEnumList" },
+        "notificationType": { "$ref":"#/definitions/notificationType" }
+      }
+    },
+
+
+
+    "ontPhysicalMediaRedundancyState": {
+      "description": "The redundancy state, it shows the current redundancy state of the optical interface at physical level (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.RedundancyState$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": { "$ref": "#/definitions/redundancyStateEnumList" }
+      }
+    },
+
+    "ontPhysicalMediaNominalBitRateDownstream": {
+      "description": "The nominal bit rate for PonMode configured Downstream (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.NominalBitRateDownstream$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPhysicalMediaNominalBitRateUpstream": {
+      "description": "The nominal bit rate for PonMode configured upstream (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.NominalBitRateUpstream$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPhysicalMediaPerformanceThresholdObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.PerformanceThreshold\\.$"
+        }
+      }
+    },
+
+    "ontPhysicalMediaPerformanceThresholdSignalFail": {
+      "description": "This attribute specifies the downstream bit error rate (BER) threshold to detect the SF alarm (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.PerformanceThreshold\\.SignalFail$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPhysicalMediaPerformanceThresholdSignalDegrade": {
+      "description": "This attribute specifies the downstream bit error rate (BER) threshold to detect the SD alarm, The SD threshold must be lower than the SF threshold (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.PerformanceThreshold\\.SignalDegrade$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPhysicalMediaRxPowerObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.RxPower\\.$"
+        }
+      }
+    },
+
+    "ontPhysicalMediaRxPowerSignalLevel": {
+      "description": "The optical level received at the optical module (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.RxPower\\.SignalLevel$"
+        },
+        "type": {
+          "type": "string",
+          "const": "int"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+
+    "ontPhysicalMediaRxPowerSignalLevelLowerThreshold": {
+      "description": "The optical level threshold configured to generate a Low signal level alarm (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.RxPower\\.SignalLevelLowerThreshold$"
+        },
+        "type": {
+          "type": "string",
+          "const": "int"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+
+    "ontPhysicalMediaRxPowerSignalLevelUpperThreshold": {
+      "description": "The optical level threshold configured to generate an signal overload alarm (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.RxPower\\.SignalLevelUpperThreshold$"
+        },
+        "type": {
+          "type": "string",
+          "const": "int"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+
+    "ontPhysicalMediaTxPowerObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.TxPower\\.$"
+        }
+      }
+    },
+
+    "ontPhysicalMediaTxPowerSignalLevel": {
+      "description": "The optical level received at the optical module (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.TxPower\\.SignalLevel$"
+        },
+        "type": {
+          "type": "string",
+          "const": "int"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+
+    "ontPhysicalMediaTxPowerSignalLevelLowerThreshold": {
+      "description": "The optical level threshold configured to generate a Low signal level alarm (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.TxPower\\.SignalLevelLowerThreshold$"
+        },
+        "type": {
+          "type": "string",
+          "const": "int"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+
+    "ontPhysicalMediaTxPowerSignalLevelUpperThreshold": {
+      "description": "The optical level threshold configured to generate an signal overload alarm (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.TxPower\\.SignalLevelUpperThreshold$"
+        },
+        "type": {
+          "type": "string",
+          "const": "int"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+
+    "ontPhysicalMediaVoltageObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Voltage\\.$"
+        }
+      }
+    },
+
+    "ontPhysicalMediaVoltageLevel": {
+      "description": "The voltage measured the optical module (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Voltage\\.VoltageLevel$"
+        },
+        "type": {
+          "type": "string",
+          "const": "int"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+
+    "ontPhysicalMediaBiasObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Bias\\.$"
+        }
+      }
+    },
+
+    "ontPhysicalMediaCurrentBias": {
+      "description": "The bias current measured at the optical module (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Bias\\.CurrentBias$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+
+    "ontPhysicalMediaTemperatureObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Temperature\\.$"
+        }
+      }
+    },
+
+    "ontPhysicalMediaTemperatureCurrentTemp": {
+      "description": "The current temperature measured at the optical module (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Temperature\\.CurrentTemp$"
+        },
+        "type": {
+          "type": "string",
+          "const": "int"
+        },
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmObj": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.$"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmRdi": {
+      "description": "Remote defect indication (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.RDI$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmPee": {
+      "description": "Physical Equipment error (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.PEE$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmLos": {
+      "description": "Loss of signal (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.LOS$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmLof": {
+      "description": "Loss of frame (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.LOF$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmDact": {
+      "description": "Deactivate ONU-ID (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.DACT$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmDis": {
+      "description": "Disabled ONU (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.DIS$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmMis": {
+      "description": "Link mismatching (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.MIS$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmMem": {
+      "description": "Message error message, when ONU receives an unknown message (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.MEM$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmSuf": {
+      "description": "Start up failure, when the ranging of the ONU has failed (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.SUF$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmSd": {
+      "description": "Signal failed, when BER value is beyond to the one configured at the ONU (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.SD$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmSf": {
+      "description": "Signal failed, when BER value is beyond to the one configured at the ONU (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.SF$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmLcdg": {
+      "description": "Loss of GEM channel delineation, When GEM fragment delineation is lost according to clause 8.3.2 state machine (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.LCDG$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmTf": {
+      "description": "Transmitter failure, The ONU transmitter is declared in failure when there is no nominal backfacet photocurrent or when the drive currents go beyond the maximum specification (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.TF$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontPhysicalMediaAlarmRogue": {
+      "description": "ROGUE ONU, The ONU transmitter is declared as ROGUE ONU (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.PhysicalMedia\\.\\d+\\.Alarm\\.ROGUE$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/alarmEnumList"
+        }
+      }
+    },
+
+    "ontGtcObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "const": "Device.X_RDK_ONT.Gtc."
+        }
+      }
+    },
+
+    "ontGtcCorrectedFecBytes": {
+      "description": "Count of FEC codewords that contained errors but were corrected by the FEC function. Reference: ITU-T G.988, Clause 9.2.9 and 9.2.22 (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Gtc.CorrectedFecBytes"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGtcCorrectedFecCodeWords": {
+      "description": "Count of FEC codewords that contained errors but were corrected by the FEC function. Reference: ITU-T G.988, Clause 9.2.9 and 9.2.2 (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Gtc.CorrectedFecCodeWords"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGtcUnCorrectedFecCodeWords": {
+      "description": "Count of FEC codewords that contained errors and could not be corrected by the FEC function. Reference: ITU-T G.988, Clause 9.2.9 and 9.2.22 (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Gtc.UnCorrectedFecCodeWords"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGtcGtcTotalFecCodeWords": {
+      "description": "Count of total received code words. Reference: ITU-T G.988, Clause 9.2.9 and 9.2.22 (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Gtc.TotalFecCodeWords"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGtcHecErrorCount": {
+      "description": "The number of FEC words included into a physical burst payload. (Reference: 'FS HEC error count' defined in Table C.14.1 of ITU-T G.9807) (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Gtc.HecErrorCount"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGtcPSBdHecErrors": {
+      "description": "This attribute counts HEC errors in any of the fields of the downstream physical sync block (Reference: 'PSBd HEC error count' defined in Table C.14.1 of ITU-T G.9807,ITU-T G.988, Clause 9.2.15 and 9.2.23) (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Gtc.PSBdHecErrors"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGtcFrameHecErrors": {
+      "description": "The number of instances of an XGEM frame HEC error. (Reference: 'Count of XGEM frame header HEC errors' in Table C.14.1 of ITU-T G.9807,ITU-T G.988, Clause 9.2.15 and 9.2.23) (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Gtc.FrameHecErrors"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGtcFramesLost": {
+      "description": "The number of 4 byte words lost because of an XGEM frame HEC error. Reference: ITU-T G.988, Clause 9.2.15 and 9.2.23 (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Gtc.FramesLost"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPloamObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "const": "Device.X_RDK_ONT.Ploam."
+        }
+      }
+    },
+
+    "ontPloamOnuId": {
+      "description": "The vendor id of the ONU the same as the 4 most significant bytes of the ONU serial number (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.OnuId"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1022
+        }
+      }
+    },
+
+    "ontPloamVendorId": {
+      "description": "The vendor id of the ONU the same as the 4 most significant bytes (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.VendorId"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+
+    "ontPloamSerialNumber": {
+      "description": "ONU serial number as defined in the TC layer (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.SerialNumber"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^([a-fA-F0-9]{2})+$",
+          "maxLength": 128
+        }
+      }
+    },
+
+    "ontPloamRegistrationState": {
+      "description": "The registration state of ONT (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.RegistrationState"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "enum" : ["O1","O2","O3","O4","O5","O6","O7","O8","O9"]
+        }
+      }
+    },
+
+
+
+    "ontPloamActivationCounter": {
+      "description": "The number of times the ONU pass through O5 between reboots (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.ActivationCounter"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPloamTxMessageCount": {
+      "description": "The number of PLOAM messages transmitted (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.TxMessageCount"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPloamRxMessageCount": {
+      "description": "The number of PLOAM messages received (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.RxMessageCount"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPloamMicErrors": {
+      "description": "The number of packets with MIC errors (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.MicErrors"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPloamRegistrationTimersObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "const": "Device.X_RDK_ONT.Ploam.RegistrationTimers."
+        }
+      }
+    },
+
+    "ontPloamRegistrationTimersTO1": {
+      "description": "Ranging timer (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.RegistrationTimers.TO1"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontPloamRegistrationTimersTO2": {
+      "description": "Loss of downstream synchronization (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Ploam.RegistrationTimers.TO2"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.$"
+        }
+      }
+    },
+
+    "ontGemPortId": {
+      "description": "The identification of the Gem port (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.PortId$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemTrafficType": {
+      "description": "The kind of traffic associated to this port based on what kind of GEM port (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.TrafficType$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "enum": ["Unidirectional","Bidirectional"]
+        }
+      }
+    },
+
+    "ontGemTransmittedFrames": {
+      "description": "Number of frames transmitted by this port (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.TransmittedFrames$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemReceivedFrames": {
+      "description": "Number of frames received by this port (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.ReceivedFrames$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedLong"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.$"
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.$"
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressTagged": {
+      "description": "Informs the network traffic configuration (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.Tagged$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "enum": ["Single","Double"]
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressCVlanObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.C-VLAN\\.$"
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressCVlanVid": {
+      "description": "VLAN ID (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.C-VLAN\\.Vid$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressCVlanPcp": {
+      "description": "Priority Code Point (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.C-VLAN\\.Pcp$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressCVlanDei": {
+      "description": "Drop Eligible Indicator (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.C-VLAN\\.Dei$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressSVlanObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.S-VLAN\\.$"
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressSVlanVid": {
+      "description": "VLAN ID (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.S-VLAN\\.Vid$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressSVlanPcp": {
+      "description": "Priority Code Point (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.S-VLAN\\.Pcp$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowIngressSVlanDei": {
+      "description": "Drop Eligible Indicator (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Ingress\\.S-VLAN\\.Dei$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.$"
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressTagged": {
+      "description": "Informs the network traffic configuration (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.Tagged$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "enum": ["Single","Double"]
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressCVlanObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.C-VLAN\\.$"
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressCVlanVid": {
+      "description": "VLAN ID (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.C-VLAN\\.Vid$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressCVlanPcp": {
+      "description": "Priority Code Point (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.C-VLAN\\.Pcp$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressCVlanDei": {
+      "description": "Drop Eligible Indicator (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.C-VLAN\\.Dei$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressSVlanObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.S-VLAN\\.$"
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressSVlanVid": {
+      "description": "VLAN ID (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.S-VLAN\\.Vid$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressSVlanPcp": {
+      "description": "Priority Code Point (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.S-VLAN\\.Pcp$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontGemEthernetFlowEgressSVlanDei": {
+      "description": "Drop Eligible Indicator (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Gem\\.\\d+\\.EthernetFlow\\.Egress\\.S-VLAN\\.Dei$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontOmciObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "const": "Device.X_RDK_ONT.Omci."
+        }
+      }
+    },
+
+    "ontOmciRxBaseLineMessageCountValid": {
+      "description": "Count of OMCI messages (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Omci.RxBaseLineMessageCountValid"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontOmciRxExtendedMessageCountValid": {
+      "description": "Count of OMCI messages (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Omci.RxExtendedMessageCountValid"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontOmciMicErrors": {
+      "description": "Count of MIC errors (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.Omci.MicErrors"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontVeipObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.$"
+        }
+      }
+    },
+
+    "ontVeipInterfaceName": {
+      "description": "Informs about interface name used on top of the Veip to terminate vlan traffic (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.InterfaceName$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "maxLength":256
+        }
+      }
+    },
+
+    "ontVeipMeId": {
+      "description": "Identifier of the VEIP ME (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.MeId$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontVeipAdministrativeState": {
+      "description": "Informs the current administrative state of Veip interface from OMCI domain (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.AdministrativeState$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+
+        "value": { "$ref": "#/definitions/lockEnumList" },
+        "notificationType": { "$ref":"#/definitions/notificationType" }
+      }
+    },
+
+    "ontVeipOperationalState": {
+      "description": "Informs the current operational state of Veip interface from OMCI domain (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.OperationalState$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+            "type": "string",
+            "enum": [
+                "Up",
+                "Down",
+                "Unknown",
+                "Dormant",
+                "NotPresent",
+                "LowerLayerDown",
+                "Error"
+            ]
+        }
+      }
+    },
+
+    "ontVeipInterDomainName": {
+      "description": "This attribute is a character string that provides an optional way to identify the VEIP to a non-OMCI management domain, and expose the default provider brigde configuration. (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.InterDomainName$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "maxLength":25
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowIngressObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Ingress.$"
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowIngressTagged": {
+      "description": "Informs the network traffic configuration (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Ingress.Tagged$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "enum": ["Untagged","Single","Double"]
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowIngressQVlanObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Ingress\\.Q-VLAN\\.$"
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowIngressQVlanVid": {
+      "description": "VLAN ID (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Ingress\\.Q-VLAN\\.Vid$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowIngressQVlanPcp": {
+      "description": "Priority Code Point (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Ingress\\.Q-VLAN\\.Pcp$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowIngressQVlanDei": {
+      "description": "Drop Eligible Indicator (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Ingress\\.Q-VLAN\\.Dei$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowEgressObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Egress.$"
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowEgressTagged": {
+      "description": "Informs the network traffic configuration (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Egress.Tagged$"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string",
+          "enum": ["Untagged","Single","Double"]
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowEgressQVlanObj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Egress\\.Q-VLAN\\.$"
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowEgressQVlanVid": {
+      "description": "VLAN ID (Access = Read-Write)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Egress\\.Q-VLAN\\.Vid$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowEgressQVlanPcp": {
+      "description": "Priority Code Poin (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Egress\\.Q-VLAN\\.Pcp$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontVeipEthernetFlowEgressQVlanDei": {
+      "description": "Drop Eligible Indicator (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^Device\\.X_RDK_ONT\\.Veip\\.\\d+\\.EthernetFlow\\.Egress\\.Q-VLAN\\.Dei$"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "ontTR69Obj": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "const": "Device.X_RDK_ONT.TR69."
+        }
+      }
+    },
+
+    "ontTR69url": {
+      "description": "ACS URI to be used by DNS client to resolve to an IP address (Access = Read-Only)",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+           "const": "Device.X_RDK_ONT.TR69.url"
+        },
+        "type": {
+          "type": "string",
+          "const": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+
+    "ontTR69AssociatedTag": {
+      "description": "Tag to transfer information from OMCI domain to TR69 domain (Access = Read-Only)",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "Device.X_RDK_ONT.TR69.AssociatedTag"
+        },
+        "type": {
+          "type": "string",
+          "const": "unsignedInt"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+
+
+  },
+
+  "type": "object",
+  "required": [
+    "module",
+    "version",
+    "action",
+    "reqId"
+  ],
+  "properties": {
+    "module": {   "$ref": "#/definitions/moduleName"   },
+    "version": {  "$ref": "#/definitions/schemaVersion" },
+    "reqId": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "action": { "$ref": "#/definitions/action" }
+  },
+
+  "allOf": [
+    {
+      "description": "Conditional block to include data model parameters based on actions",
+      "if": {
+        "properties": { "action": { "const": "setParameters" } }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": { "$ref": "#/definitions/setParameters" }
+          }
+        },
+        "required": [ "params" ]
+      }
+    },
+
+    {
+      "if": {
+        "properties": { "action": { "const": "getParameters" } }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": { "$ref": "#/definitions/getParameters" }
+          }
+        },
+        "required": [ "params" ]
+      }
+    },
+
+    {
+      "if": {
+        "properties": { "action": { "const": "deleteObject" } }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": { "$ref": "#/definitions/deleteObject" }
+          }
+        },
+        "required": [ "params" ]
+      }
+    },
+
+    {
+      "if": {
+        "properties": { "action": { "const": "subscribeEvent" } }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": { "$ref": "#/definitions/subscribeEvent" }
+          }
+        },
+        "required": [ "params" ]
+      }
+    },
+
+    {
+      "if": {
+        "properties": { "action": { "const": "publishEvent" } }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": { "$ref": "#/definitions/publishEvent" }
+          }
+        },
+        "required": [ "params" ]
+      }
+    },
+
+    {
+      "if": {
+        "properties": { "action": { "const": "result" } }
+      },
+      "then": {
+        "properties": {
+          "Result": {
+            "type": "object",
+            "$ref": "#/definitions/result"
+          }
+        },
+        "required": [ "Result" ]
+      }
+    },
+
+    {
+      "if": {
+        "properties": { "action": { "const": "getSchemaResponse" } }
+      },
+      "then": {
+        "properties": {
+          "SchemaInfo": {
+            "type": "object",
+            "$ref": "#/definitions/getSchemaResponse"
+          }
+        },
+        "required": [ "SchemaInfo" ]
+      }
+    },
+
+    {
+      "if": {
+        "properties": { "action": { "const": "getParametersResponse" } }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": { "$ref": "#/definitions/getParametersResponse" }
+          }
+        },
+        "required": [ "params" ]
+      }
+    }
+
+  ]
+
+}

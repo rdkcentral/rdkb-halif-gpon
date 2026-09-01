@@ -1,0 +1,5 @@
+{
+   "hal_schema_path": "/etc/rdk/schemas/gpon_hal_schema.json",
+   "server_port":40100
+}
+

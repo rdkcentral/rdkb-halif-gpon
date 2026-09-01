@@ -1,0 +1,13 @@
+{
+  "module": "gponhal",
+  "version": "0.0.1",  
+  "action": "subscribeEvent",
+  "reqId" : "100006",
+  "params":
+  [
+    { 
+      "name":"Device.X_RDK_ONT.PhysicalMedia.1.Status",
+      "notificationType": "onChange"
+    }    
+  ]
+}

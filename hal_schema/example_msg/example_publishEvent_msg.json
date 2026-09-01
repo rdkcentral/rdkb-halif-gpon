@@ -1,0 +1,14 @@
+{
+  "module": "gponhal",
+  "version": "0.0.1",  
+  "action": "publishEvent",
+  "reqId" : "100006",
+  "params":
+  [
+    { 
+      "name" :"Device.X_RDK_ONT.PhysicalMedia.1.Status",
+      "type" : "string",
+      "value":"Up"
+    }  
+  ]
+}
