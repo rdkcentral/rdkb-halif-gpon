@@ -9,7 +9,7 @@
     "schemaVersion" : {
       "description": "Supported version of the schema. DO NOT modify the value of the version string. HAL operation cannot be performed without correct supported version.",
       "type": "string",
-      "const": "0.0.1"
+      "const": "1.0.0"
     },
 
     "moduleName" : {
