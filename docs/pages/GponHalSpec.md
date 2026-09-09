@@ -428,7 +428,7 @@ into the document. What a caller should do differs per value:
 | `Invalid Argument` | A parameter name, type or value was not acceptable. | Treat as a defect in the request rather than a transient condition. Check the name against the schema's `name` constraint, the `type` against the parameter's declared datatype, and the value against its constraint. |
 | `Not Supported` | The vendor does not implement this parameter or action. | Treat as a normal outcome for a path reachable only through `getParameterOptionalList`, and stop requesting it. See `Optional Components`. |
 
-`Invalid Argument` and `Not Supported` are the two most often mishandled</b>, because both are
+`Invalid Argument` and `Not Supported` are the two most often mishandled, because both are
 permanent for a given request and neither should be retried. Retrying either produces load without
 progress.
 
