@@ -25,7 +25,7 @@ JSON HAL Library - https://github.com/rdkcentral/json-hal-library
 - `JSON` \- JavaScript Object Notation
 - `JSON-RPC` \- The remote procedure call convention carried over `JSON`, used by this HAL's transport
 - `MIC` \- Message Integrity Check, the integrity field on an `OMCI` message
-- `OMCI` \- `ONT` Management and Control Interface
+- `OMCI` \- `ONU` Management and Control Interface
 - `ONT` \- Optical Network Termination, the subscriber-side endpoint this interface models
 - `ONU` \- Optical Network Unit, the term the `ITU-T` recommendations use for the same endpoint
 - `PLOAM` \- Physical Layer Operations, Administration and Maintenance

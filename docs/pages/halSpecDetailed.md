@@ -57,7 +57,7 @@ to a definition; `reqId` is declared inline on the schema root.
 | Field | Bound to | Form | Set by |
 | --- | --- | --- | --- |
 | `module` | `moduleName` | `string`, `const` `gponhal` | Read by the client out of the deployed schema file |
-| `version` | `schemaVersion` | `string`, `const` `0.0.1` | Read by the client out of the deployed schema file |
+| `version` | `schemaVersion` | `string`, `const` `1.0.0` | Read by the client out of the deployed schema file |
 | `action` | `action` | `string`, one of the eleven members below | The caller, per request |
 | `reqId` | declared inline | `string` matching `^[0-9]+$` | The client library, one per request header |
 
