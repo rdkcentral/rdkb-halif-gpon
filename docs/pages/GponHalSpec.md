@@ -123,8 +123,8 @@ consequences follow for anyone deploying or testing this HAL:
 - The `module` and `version` a caller sends are **not** hard-coded in the caller. They come from the
   deployed schema file, so deploying the wrong file silently changes the identity of every message.
 - Because both GPON schemas declare the same `moduleName` `gponhal` and the same `schemaVersion`
-  `0.0.1`, a variant mismatch between manager and vendor is **not** detectable from the envelope. It
-  shows up later, as an unrecognised parameter name.
+-   `1.0.0`, a variant mismatch between manager and vendor is **not** detectable from the envelope. It
+-   shows up later, as an unrecognised parameter name.
 
 **No initialization message is sent over the wire.** Some `JSON` HALs in `RDK-B` write an
 initialization flag as their first request; this contract defines no such parameter, and the manager
