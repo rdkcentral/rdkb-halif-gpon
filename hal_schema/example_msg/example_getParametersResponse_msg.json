@@ -1,0 +1,11 @@
+{
+  "module": "gponhal",
+  "version": "0.0.1",
+  "action": "getParametersResponse",
+  "reqId" : "100001",
+  "params":
+  [
+    {"name":"Device.X_RDK_ONT.PhysicalMedia.1.PerformanceThreshold.SignalFail","type" : "unsignedInt", "value":123},
+    {"name":"Device.X_RDK_ONT.PhysicalMedia.1.PerformanceThreshold.SignalDegrade","type" : "unsignedInt", "value":231}
+  ]
+}

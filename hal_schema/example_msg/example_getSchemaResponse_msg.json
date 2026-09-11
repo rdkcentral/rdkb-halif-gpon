@@ -1,0 +1,9 @@
+{
+  "module": "gponhal",
+  "version": "0.0.1",
+  "action": "getSchemaResponse",
+  "reqId" : "100002",
+  "SchemaInfo": {
+    "FilePath": "/etc/rdk/hal_schemas/xtm_hal_schema.json"
+  }
+}
